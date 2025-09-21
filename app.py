@@ -32,22 +32,21 @@ def get_unused_password(kp):
 
 @app.route("/check_password", methods=["POST"])
 def check_password():
-    """Check if the provided password exists in the KeePass database."""
     kp, error = load_keystore()
     if error:
         return error, 500
 
-    # Get password from raw POST data
+    # Read raw text from request body
     password = request.data.decode("utf-8").strip()
     if not password:
         return "No password provided", 400
 
-    # Check if password exists in any entry
     for entry in kp.entries:
         if entry.password == password:
             return "valid", 200, {'Content-Type': 'text/plain'}
 
     return "invalid", 200, {'Content-Type': 'text/plain'}
+
 
 
 @app.route("/get_password", methods=["GET"])
