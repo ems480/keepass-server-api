@@ -51,18 +51,19 @@ def get_password():
     """Return a random unused password and mark it as used."""
     kp, error = load_keystore()
     if error:
-        return jsonify({"error": error}), 500
+        return error, 500
 
     entry = get_unused_password(kp)
     if not entry:
-        return jsonify({"error": "No unused passwords available"}), 400
+        return "No unused passwords available", 400
 
     # Mark as used
     entry.notes = (entry.notes or "") + " [used]"
     kp.save()
 
     # Return only the password string
-    return jsonify({"password": entry.password})
+    return entry.password, 200, {'Content-Type': 'text/plain'}
+
 
 
 @app.route("/delete_password", methods=["POST"])
