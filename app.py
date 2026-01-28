@@ -9,7 +9,10 @@ app = Flask(__name__)
 MASTER_PASSWORD = os.environ.get("MASTER_PASSWORD", "YourMasterKey")
 KDBX_FILE = os.environ.get("KDBX_FILE", "J54.kdbx")
 
-
+@app.route("/health")
+def health():
+    return jsonify({"status": "ok"}), 200
+    
 def load_keystore():
     """Load the KeePass database or return None if missing."""
     if not os.path.exists(KDBX_FILE):
