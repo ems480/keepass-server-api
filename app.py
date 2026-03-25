@@ -9,6 +9,10 @@ app = Flask(__name__)
 MASTER_PASSWORD = os.environ.get("MASTER_PASSWORD", "YourMasterKey")
 KDBX_FILE = os.environ.get("KDBX_FILE", "J54.kdbx")
 
+@app.route("/ping")
+def ping():
+    return "Keepass_server_1_Running"
+
 @app.route("/health")
 def health():
     return jsonify({"status": "ok"}), 200
